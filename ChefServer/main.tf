@@ -7,6 +7,15 @@ provider "vcd" {
     maxRetryTimeout = "${var.vcd_timeout}"
 }
 
+resource "template_file" "knife" {
+    template = "${file("${path.module}/knife.tpl")}"
+
+    vars {
+        node_name = "${var.chef_admin_userid}"
+        validation_client_name = "${var.chef_org_short}-validator"
+        chef_server_url = "https://${var.ext_ip}/organizations/${var.chef_org_short}"
+    }
+}
 resource "vcd_vapp" "chefserver" {
     name          = "${var.hostname}"
     catalog_name  = "${var.catalog}"
@@ -36,8 +45,10 @@ resource "vcd_vapp" "chefserver" {
         "wget ${var.chef_download}",
         "rpm -Uvh /tmp/chef-server-core*",
         "chef-server-ctl reconfigure",
-        "chef-server-ctl user-create ${var.chef_admin_userid} ${var.chef_admin_firstname} ${var.chef_admin_lastname} ${var.chef_admin_email} '${var.chef_admin_password}' --filename ${var.ssh_user_home}/${var.chef_admin_userid}.pem",
-        "chef-server-ctl org-create ${var.chef_org_short} '${var.chef_org_full}' --association_user ${var.chef_admin_userid} --filename ${var.ssh_user_home}/${var.chef_org_short}-validator.pem",
+        "mkdir -p ${var.ssh_user_home}/.chef",
+        "echo '${template_file.knife.rendered}' > ${var.ssh_user_home}/.chef/knife.rb",
+        "chef-server-ctl user-create ${var.chef_admin_userid} ${var.chef_admin_firstname} ${var.chef_admin_lastname} ${var.chef_admin_email} '${var.chef_admin_password}' --filename ${var.ssh_user_home}/.chef/${var.chef_admin_userid}.pem",
+        "chef-server-ctl org-create ${var.chef_org_short} '${var.chef_org_full}' --association_user ${var.chef_admin_userid} --filename ${var.ssh_user_home}/.chef/${var.chef_org_short}-validator.pem",
         "chef-server-ctl install chef-manage",
         "chef-server-ctl reconfigure",
         "chef-manage-ctl reconfigure",
