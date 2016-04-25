@@ -39,7 +39,6 @@ resource "vcd_vapp" "chefserver" {
 
     provisioner "remote-exec" {
         inline = [
-        "userdel vagrant",
         "yum -y install wget",
         "cd /tmp",
         "wget ${var.chef_download}",
@@ -54,7 +53,9 @@ resource "vcd_vapp" "chefserver" {
         "chef-manage-ctl reconfigure",
         "chef-server-ctl install opscode-reporting",
         "chef-server-ctl reconfigure",
-        "opscode-reporting-ctl reconfigure"
+        "opscode-reporting-ctl reconfigure",
+        "cd ${var.ssh_user_home}",
+        "tar zcvf ${var.ssh_user_home}/chefconfig.tar.gz .chef/*"
         ]
     }
 }
