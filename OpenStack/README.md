@@ -1,8 +1,8 @@
-# Skyscape Terraform Modules
+# OpenStack Terraform Modules
 
-This directory contains a collection of re-usable Terraform modules for vCloud Director and OpenStack. They have been developed for use on Skyscape Cloud Service's vCloud and OpenStack infrastructure and are being provided to the Open Source community for all to make use of.
+This directory contains a collection of re-usable Terraform modules for OpenStack. They have been developed for use on Skyscape Cloud Service's OpenStack infrastructure and are being provided to the Open Source community for all to make use of.
 
-See the README.md files in each sub-directory for details on each module and example code snippets for using the modules.
+Details of the modules will be added here as they are published.
 
 ----------
 
