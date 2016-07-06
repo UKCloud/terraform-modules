@@ -38,6 +38,7 @@ module "chef_server" {
     vapp_template   = "centos72"
 	network_name    = "Management Network"
 	int_ip          = "10.10.0.50"
+	hostname        = "chefserver.example.com"
 
     ssh_userid      = "root"
     ssh_user_home   = "/root"
