@@ -39,8 +39,10 @@ module "chef_server" {
 	network_name    = "Management Network"
 	int_ip          = "10.10.0.50"
 
-	ssh_key_pub     = "${file("~/.ssh/${var.ssh_userid}.pub")}"
-	ssh_key_private = "${file("~/.ssh/${var.ssh_userid}.private")}"
+    ssh_userid      = "root"
+    ssh_user_home   = "/root"
+	ssh_key_pub     = "${file("~/.ssh/root.pub")}"
+	ssh_key_private = "${file("~/.ssh/root.private")}"
 
 	chef_admin_userid     = "admin" 
 	chef_admin_firstname  = "Admin" 
