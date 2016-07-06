@@ -12,15 +12,22 @@ These modules have been developed using a CentOS7.2 server, deployed from a vApp
 
 To make use of these modules, you need to first configure the vcd provider:
 ```
+variable "vcd_org"        {}
+variable "vcd_vdc"        {}
+variable "vcd_userid"     {}
+variable "vcd_pass"       {}
+variable "vcd_api_url"    { default = "https://api.vcd.portal.skyscapecloud.com/api" }
+variable "vcd_timeout"    { default = 300 }
+
 # Configure the VMware vCloud Director Provider
 provider "vcd" {
     user                 = "${var.vcd_userid}"
     org                  = "${var.vcd_org}"
     password             = "${var.vcd_pass}"
     vdc                  = "${var.vcd_vdc}"
-    url                  = "https://api.vcd.portal.skyscapecloud.com/api"
+    url                  = "${var.vcd_api_url}"
     allow_unverified_ssl = "false"
-    maxRetryTimeout      = 300
+    maxRetryTimeout      = "${var.vcd_timeout}"
 }
 ```
 
@@ -31,6 +38,8 @@ See the variables.tf file for all the parameters that can be passed into the mod
 
 This module uses SSH Keys to login to the server and makes use of VMWare's GuestCustomisation script to deploy the specified public key. The vApp Template  specified should have vmware tools already installed.
 ```
+variable "chef_admin_password" { default = "secret" }
+
 module "chef_server" {
 	source          = "github.com/skyscape-cloud-services/terraform-modules//vcloud/ChefServer"
 
@@ -44,6 +53,10 @@ module "chef_server" {
     ssh_user_home   = "/root"
 	ssh_key_pub     = "${file("~/.ssh/root.pub")}"
 	ssh_key_private = "${file("~/.ssh/root.private")}"
+
+	#bastion_host        = "jumpbox.example.com"
+    #bastion_userid      = "myuserid"
+    #bastion_key_private = "${file("~/.ssh/myuserid.private")}"
 
 	chef_admin_userid     = "admin" 
 	chef_admin_firstname  = "Admin" 

@@ -1,9 +1,3 @@
-variable "vcd_org"        {}
-variable "vcd_userid"     {}
-variable "vcd_pass"       {}
-variable "vcd_api_url"    { default = "https://api.vcd.portal.skyscapecloud.com/api" }
-variable "vcd_timeout"    { default = 300 }
-
 variable "catalog"        { default = "DevOps" }
 variable "vapp_template"  { default = "centos71" }
 
@@ -21,9 +15,9 @@ variable "ssh_user_home"  { default = "/root"}
 variable "ssh_key_pub"    {}
 variable "ssh_key_private" {}
 
-variable "bastion_host"   {}
-variable "bastion_userid" { default = "root" }
-variable "bastion_key_private" {}
+variable "bastion_host"   { default = "" }
+variable "bastion_userid" { default = "" }
+variable "bastion_key_private" { default = "" }
 
 variable "chef_download"  { default = "https://packages.chef.io/stable/el/7/chef-server-core-12.5.0-1.el7.x86_64.rpm" }
 variable "chef_admin_userid"    { default = "administrator" }
